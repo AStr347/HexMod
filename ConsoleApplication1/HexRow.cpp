@@ -154,6 +154,14 @@ void HexRow::DataToContent() {
 	content = s;
 }
 
+
+void HexRow::SetBytes32(u32 data, u8 offset) {
+	if ((offset % 4 == 0) && (offset <= 12)) {
+		*((u32*)(this->data + offset)) = data;
+	}
+	std::cout << *this << std::endl;
+}
+
 //uotput operator for HexRow
 ostream& operator << (ostream& os, HexRow hex) {
 

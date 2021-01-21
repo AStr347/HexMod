@@ -39,6 +39,9 @@ public:
 	//set values from data into content (hex string)
 	void DataToContent();
 
+	//set 32 bit with offset
+	void SetBytes32(u32 data, u8 offset);
+
 };
 
 //uotput operator for HexRow

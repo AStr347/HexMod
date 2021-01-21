@@ -66,6 +66,10 @@ int main(int argc, char* argv[])
 		endname = argv[2];
 	}
 
+	if (argc > 3) {
+		date = argv[3];
+	}
+
 	if (projectname == "dcd1" || projectname == "danish_core_devices") {
 		dcd = true;
 		wayToMapHex += "dist/" + device + "/production/";
@@ -122,6 +126,7 @@ int main(int argc, char* argv[])
 
 		//index of config_in_flash HexRow
 		int indexneedHexRow = 0;
+		int mac_offset = 0;
 
 		//open hex file
 		ifstream hexFile = ifstream(wayToMapHex + hexName);
@@ -136,14 +141,16 @@ int main(int argc, char* argv[])
 
 				if (h.type == 4) {
 					now_high = h.addres;
-				}
-
-				if (now_high == high) {
-					if (now_address == low) {
-						indexneedHexRow = lines.size();
+				} else if (h.type == 0 && h.size == 0x10){//only full data strings
+					if (now_high == high) {
+						int offset = low - now_address;
+						if (offset >= 0 && offset < 12) {//in string only 16 byte (12 offset + 4 for mac) 
+							cout << "offset = " << offset << endl;
+							mac_offset = offset;
+							indexneedHexRow = lines.size();
+						}
 					}
 				}
-
 				lines.push_back(h);
 			}
 			hexFile.close();
@@ -153,7 +160,7 @@ int main(int argc, char* argv[])
 
 			for (int i = 0; i < MACS_COUNT; i++) {
 				//modify hex row
-				*((u32*)(needHexRow->data)) = macs[i];
+				needHexRow->SetBytes32(macs[i], mac_offset);
 				needHexRow->DataToContent();
 				needHexRow->GenerateCheckSumm();
 
