@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.5) # Проверка версии CMake.
+									# Если версия установленой программы
+									# старее указаной, произайдёт аварийный выход.
+
+
+
+
+project(HexMod)			# Название проекта
+
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "..")
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+add_executable(main Main.cpp)	# Создает исполняемый файл с именем main
+
+add_subdirectory(Convert)				# Добавление подпроекта, указывается имя дирректории
+add_subdirectory(Date)
+add_subdirectory(HexRow)
+
+target_link_libraries(main Convert;Date;HexRow)		# Линковка программы с библиотекой

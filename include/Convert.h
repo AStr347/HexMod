@@ -1,7 +1,6 @@
 #ifndef CONVERT_H
 #define CONVERT_H
 #include "arch.h"
-#include "pch.h"
 
 extern u32 string_to_int(string s);
 

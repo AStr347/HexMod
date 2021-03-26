@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.5) # Проверка версии CMake.
+									# Если версия установленой программы
+									# старее указаной, произайдёт аварийный выход.
+
+project(Convert)				# Название проекта
+
+include_directories(${PROJECT_SOURCE_DIR}/include)			# Расположение заголовочных файлов
+
+set(SOURCE_LIB Convert.cpp)		# Установка переменной со списком исходников
+
+add_library(Convert STATIC ${SOURCE_LIB})# Создание статической библиотеки

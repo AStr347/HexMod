@@ -1,4 +1,6 @@
-#pragma once
+#ifndef DATE_H
+#define DATE_H
+#include "arch.h"
 class Date {
 
 
@@ -15,3 +17,4 @@ public:
 };
 
 extern ostream& operator <<(ostream& os, Date& d);
+#endif
