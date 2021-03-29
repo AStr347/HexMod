@@ -1,19 +1,20 @@
 cmake_minimum_required(VERSION 3.5) # Проверка версии CMake.
-									# Если версия установленой программы
-									# старее указаной, произайдёт аварийный выход.
-
-
-
 
 project(HexMod)			# Название проекта
 
-set (CMAKE_RUNTIME_OUTPUT_DIRECTORY "..")
+#set Release/Debug dir place
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "..")
+#all our files in src
+set(SOURCEDIR ${PROJECT_SOURCE_DIR}/src)
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
-add_executable(main Main.cpp)	# Создает исполняемый файл с именем main
+include_directories(${SOURCEDIR}/include)# Расположение заголовочных файлов
 
-add_subdirectory(Convert)				# Добавление подпроекта, указывается имя дирректории
-add_subdirectory(Date)
-add_subdirectory(HexRow)
+add_executable(hexmod ${SOURCEDIR}/Main.cpp)#Создаем исполняемый файл
 
-target_link_libraries(main Convert;Date;HexRow)		# Линковка программы с библиотекой
+#Добавляем подпроекты указывая пути
+add_subdirectory(${SOURCEDIR}/Convert)
+add_subdirectory(${SOURCEDIR}/Date)
+add_subdirectory(${SOURCEDIR}/HexRow)
+
+#линкуем библиотеки
+target_link_libraries(hexmod Convert;Date;HexRow)
