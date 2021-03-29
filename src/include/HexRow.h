@@ -1,8 +1,6 @@
 #ifndef HEXROW_H
 #define HEXROW_H
-#include "Convert.h"
 #include "arch.h"
-#include "pch.h"
 
 class HexRow {
 public:

@@ -1,7 +1,6 @@
 #ifndef MACS_H
 #define MACS_H
 #include "arch.h"
-#include "pch.h"
 //defines for puls mac
 // 8 decimal numbers
 #define DECDIV(a, n) (a%n)

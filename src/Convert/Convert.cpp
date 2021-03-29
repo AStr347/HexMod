@@ -1,6 +1,4 @@
 #include "Convert.h"
-#include "pch.h"
-
 
 u32 string_to_int(string s) {
 	return stoi(s);

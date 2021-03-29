@@ -1,5 +1,5 @@
 #include "HexRow.h"
-#include "pch.h"
+#include "Convert.h"
 //default constructor
 HexRow::HexRow() {
 	size = 0;

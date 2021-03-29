@@ -1,7 +1,5 @@
 ﻿// ConsoleApplication1.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
-
-#include "pch.h"
 #include <regex>
 #include <fstream>
 
@@ -30,23 +28,6 @@ vector<string> split(string s, char delim = ' ') {
 
 	return v;
 }
-
-//string replacer(string s, char bef, char aft) {
-//	string result(s);
-//	for (auto& i : result) {
-//		if (i == bef) {
-//			i = aft;
-//		}
-//	}
-//	return result;
-//}
-//
-//void tolow(string& s) {
-//	std::locale loc;
-//	for (auto& i : s) {
-//		i = std::tolower(i, loc);
-//	}
-//}
 
 
 
