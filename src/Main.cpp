@@ -3,22 +3,19 @@
 #include <regex>
 #include <fstream>
 
-
 #include "Convert.h"
 #include "HexRow.h"
-#include "Macs.h"
 #include "Date.h"
-
-
 using std::ifstream;
 using std::ofstream;
 using std::cout;
 using std::endl;
 
+#include "Macs.h"
+
 //split string
-vector<string> split(string s, char delim = ' ') {
+vector<string> split(const string s, const char delim = ' ') {
 	stringstream ss(s);
-	int i = 0;
 	string tmp;
 	vector<string> v;
 
@@ -31,11 +28,11 @@ vector<string> split(string s, char delim = ' ') {
 
 
 
-int main(int argc, char* argv[])
+int main(const int argc, const char* argv[])
 {
 	vector<string> result = split(argv[0], '\\');
 	bool dcd = false;
-	string projectname = result[result.size() - 2];
+	const string projectname = result[result.size() - 2];
 	string wayToMapHex("./");
 	string mapName("");
 	string hexName("");
@@ -56,8 +53,7 @@ int main(int argc, char* argv[])
 		wayToMapHex += "dist/" + device + "/production/";
 		mapName = projectname + ".production.map";
 		hexName = projectname + ".production.hex";
-	}
-	else {
+	} else {
 		wayToMapHex += "Release/";
 		mapName = "output.map";
 		hexName = device + ".hex";
@@ -84,14 +80,16 @@ int main(int argc, char* argv[])
 
 		while (getline(mapFile, s)) {
 			std::smatch match;
+			//0x000000009d03e000
 			if (regex_match(s, match, config_in_flash)) {
 				string smatch(match[1]);
+				const int addrlen = smatch.length();
 				string shigh("");
-				string slow(smatch.substr(6, 4));
+				const string slow(smatch.substr(addrlen - 4, 4));
 				if (dcd) {
-					shigh = "1" + smatch.substr(3, 3);
+					shigh = "1" + smatch.substr(addrlen - 7, 3);
 				} else {
-					shigh = smatch.substr(2, 4);
+					shigh = smatch.substr(addrlen - 8, 4);
 				}
 				
 				cout << "config address = "<< shigh << '\t' << slow << endl;
@@ -118,7 +116,7 @@ int main(int argc, char* argv[])
 			while (getline(hexFile, s)) {
 				HexRow h(s);
 
-				int now_address = h.addres;
+				const int now_address = h.addres;
 
 				if (h.type == 4) {
 					now_high = h.addres;
@@ -145,13 +143,9 @@ int main(int argc, char* argv[])
 				needHexRow->DataToContent();
 				needHexRow->GenerateCheckSumm();
 
-				string finalName(names_macs[i] + "_" + endname + "_" + date + ".hex");
+				const string mac_name(names_macs[i]);
+				const string finalName(mac_name + "_" + endname + "_" + date + ".hex");
 				cout << finalName << std::endl;
-				/*
-				cout << "MacConf = " << *((u32*)(needHexRow->data)) << std::endl;
-				cout << "TRITGEN = " << macs[i] << std::endl;
-				cout << "HexRow  = " << needHexRow->to_string() << std::endl;
-				*/
 
 				//create new hex file
 				ofstream newHex(wayToMapHex + finalName);

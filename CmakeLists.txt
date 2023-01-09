@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.5) # Проверка версии CMake.
 
+# include func for fast static lib creating
+include(libbuilder.cmake)
+
 project(HexMod)			# Название проекта
 
 #set Release/Debug dir place
@@ -17,4 +20,4 @@ add_subdirectory(${SOURCEDIR}/Date)
 add_subdirectory(${SOURCEDIR}/HexRow)
 
 #линкуем библиотеки
-target_link_libraries(hexmod Convert;Date;HexRow)
+target_link_libraries(hexmod Convert Date HexRow)

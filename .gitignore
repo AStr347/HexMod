@@ -1,4 +1,6 @@
-.vscode
-build
-Release
-Debug
+/.vscode/
+/build/
+/Release/
+/Debug/
+/dist/
+/hexmod.exe

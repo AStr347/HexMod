@@ -1,1 +1,4 @@
-add_library(Convert STATIC Convert.cpp)# Создание статической библиотеки
+SLIB_INIT(
+    SRCS Convert.cpp
+    INCLUDE include
+)

@@ -1,2 +1,5 @@
-add_library(Date STATIC Date.cpp)# Создание статической библиотеки
-target_link_libraries(Date Convert)
+SLIB_INIT(
+    SRCS Date.cpp
+    INCLUDE include
+    PUB_REQ Convert
+)

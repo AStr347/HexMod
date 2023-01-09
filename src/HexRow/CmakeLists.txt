@@ -1,2 +1,5 @@
-add_library(HexRow STATIC HexRow.cpp)# Создание статической библиотеки
-target_link_libraries(HexRow Convert)
+SLIB_INIT(
+    SRCS HexRow.cpp
+    INCLUDE include
+    PUB_REQ Convert
+)
