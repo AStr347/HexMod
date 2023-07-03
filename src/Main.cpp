@@ -48,7 +48,15 @@ int main(const int argc, const char* argv[])
 		date = argv[3];
 	}
 
-	if (projectname == "dcd1" || projectname == "danish_core_devices") {
+	const bool is_debug = ("HexMod" == projectname);
+	const bool is_dcd1 = ("dcd1" == projectname);
+	const bool is_dcd_old = ("danish_core_devices" == projectname);
+	if(is_debug){
+		dcd = true;
+		wayToMapHex += "dist/" + device + "/production/";
+		mapName = "dcd1.production.map";
+		hexName = "dcd1.production.hex";
+	} else if (is_dcd1 || is_dcd_old) {
 		dcd = true;
 		wayToMapHex += "dist/" + device + "/production/";
 		mapName = projectname + ".production.map";
@@ -138,14 +146,13 @@ int main(const int argc, const char* argv[])
 
 
 			for (int i = 0; i < MACS_COUNT; i++) {
-				//modify hex row
-				needHexRow->SetBytes32(macs[i], mac_offset);
-				needHexRow->DataToContent();
-				needHexRow->GenerateCheckSumm();
-
 				const string mac_name(names_macs[i]);
 				const string finalName(mac_name + "_" + endname + "_" + date + ".hex");
 				cout << finalName << std::endl;
+				
+				//modify hex row
+				needHexRow->SetBytes32(macs[i], mac_offset);
+				needHexRow->GenerateCheckSumm();
 
 				//create new hex file
 				ofstream newHex(wayToMapHex + finalName);

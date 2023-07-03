@@ -11,7 +11,7 @@ string int_to_string(const int i) {
 
 string int_to_hex(const u64 dec) {
 	stringstream ss("");
-	ss << std::hex << dec;
+	ss << std::uppercase << std::hex << dec;
 	string s;
 	ss >> s;
 	return s;
