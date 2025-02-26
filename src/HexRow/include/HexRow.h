@@ -2,11 +2,20 @@
 #define HEXROW_H
 #include "arch.h"
 
+enum hexrow_types_t {
+	HEXRT_DATA = 0x00,// data record
+	HEXRT_EOF = 0x01,// end of file
+	HEXRT_SEG_ADDR = 0x02,// segment addr
+	HEXRT_SEG_ADDR_START = 0x03,// segment addr of start
+	HEXRT_LINE_ADDR = 0x04,// lineral addr
+	HEXRT_LINE_ADDR_START = 0x05,// lineral addr start
+};
+
 class HexRow {
 public:
 	u32 size;
 	u32 addres;
-	u32 type;
+	hexrow_types_t type;
 	u8* data;
 	u8 chs;
 	string content;
@@ -37,12 +46,15 @@ public:
 };
 
 //adds zeros forward to the desired length
+extern
 string add_zeros(const string s, const u8 need_len);
 
 //Hex string to butes(u8) array
+extern
 u8* DataStringToBytes(string data);
 
 //uotput operator for HexRow
-extern ostream& operator << (ostream&, HexRow hex);
+extern
+ostream& operator << (ostream&, HexRow hex);
 
 #endif

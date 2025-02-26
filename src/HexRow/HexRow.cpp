@@ -3,7 +3,7 @@
 //default constructor
 HexRow::HexRow() {
 	size = 0;
-	type = 0;
+	type = HEXRT_DATA;
 	content = "";
 	addres = 0;
 	chs = 0;
@@ -17,21 +17,19 @@ HexRow::HexRow() {
 // :10e000000055f300000400040401000101100101a7
 HexRow::HexRow(const string row) {
 	size = hex_to_int(row.substr(1, 2));//ok
-	type = hex_to_int(row.substr(7, 2));//ok
+	type = (hexrow_types_t)hex_to_int(row.substr(7, 2));//ok
 	data = nullptr;
 
-	if (type != 4) {
-		addres = hex_to_int(row.substr(3, 4));
-	} else {
+	if (HEXRT_LINE_ADDR == type) {
 		addres = hex_to_int(row.substr(9, 4));
+	} else {
+		addres = hex_to_int(row.substr(3, 4));
 	}
 
 	content = row.substr(9, row.length() - 2 - 9);
-	if (type != 1) {
-		chs = hex_to_int(row.substr(row.length() - 2, 2));
+	chs = hex_to_int(row.substr(row.length() - 2, 2));
+	if (HEXRT_EOF != type) {
 		data = DataStringToBytes(content);
-	} else {
-		chs = hex_to_int(row.substr(row.length() - 2, 2));
 	}
 }
 
@@ -161,7 +159,7 @@ ostream& operator << (ostream& os, const HexRow hex) {
 
 	os << ":" << size;
 
-	if (hex.type == 4) {
+	if (HEXRT_LINE_ADDR == hex.type) {
 		os << "0000" << type << addres << chs;
 	} else {
 		os << addres << type << hex.content << chs;

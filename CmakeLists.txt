@@ -12,7 +12,7 @@ set(SOURCEDIR ${PROJECT_SOURCE_DIR}/src)
 
 include_directories(${SOURCEDIR}/include)# Расположение заголовочных файлов
 
-add_executable(hexmod ${SOURCEDIR}/Main.cpp)#Создаем исполняемый файл
+add_executable(hexmod ${SOURCEDIR}/main.cpp)#Создаем исполняемый файл
 
 #Добавляем подпроекты указывая пути
 add_subdirectory(${SOURCEDIR}/Convert)
