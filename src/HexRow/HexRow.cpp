@@ -43,7 +43,7 @@ string HexRow::to_string() {
 }
 
 //return and set CheckSumm
-int HexRow::GenerateCheckSumm()
+u8 HexRow::GenerateCheckSumm()
 {
 	const string self = this->to_string();
 	const string temp = self.substr(1);
@@ -63,9 +63,9 @@ int HexRow::GenerateCheckSumm()
 }
 
 //not used
-bool HexRow::EditDataString(const u32 address, const u8* src, const u32 size)
+b8 HexRow::EditDataString(const u32 address, const u8* src, const u32 size)
 {
-	bool result = false;
+	b8 result = false;
 	const u32 loc_size = size;
 	const u32 addr = this->addres;
 
@@ -81,7 +81,7 @@ bool HexRow::EditDataString(const u32 address, const u8* src, const u32 size)
 }
 
 //not used
-bool HexRow::EditDataString(const u32 address, const u32 data, const u32 size)
+b8 HexRow::EditDataString(const u32 address, const u32 data, const u32 size)
 {
 	const u64 c1 = ((u64)(data) & (0xFF));
 	const u64 c0 = (((u64)(data) >> 8 * 1) & (0xFF));
@@ -98,7 +98,7 @@ bool HexRow::EditDataString(const u32 address, const u32 data, const u32 size)
 	}
 
 	u8* tempData = DataStringToBytes(temp);
-	const bool result = this->EditDataString(address, tempData, temp.length() / 2);
+	const b8 result = this->EditDataString(address, tempData, temp.length() / 2);
 	return result;
 }
 
@@ -116,7 +116,7 @@ void HexRow::DataToContent(void) {
 
 
 void HexRow::SetBytes32(const u32 data, const u8 offset) {
-	if ((offset % 4 == 0) && (offset <= 12)) {
+	if (offset <= 12) {
 		*((u32*)(this->data + offset)) = data;
 	}
 	this->DataToContent();
@@ -126,7 +126,7 @@ void HexRow::SetBytes32(const u32 data, const u8 offset) {
 
 //adds zeros forward to the desired length
 string add_zeros(const string s, const u8 need_len) {
-	const int len = s.length();
+	const u32 len = s.length();
 	string result = s;
 	if (len < need_len) {
 		result = string(need_len - len, '0') + s;
@@ -137,12 +137,12 @@ string add_zeros(const string s, const u8 need_len) {
 //Hex string to butes(u8) array
 u8* DataStringToBytes(const string data)
 {
-	const int size = data.length() / 2;
+	const u32 size = data.length() / 2;
 	u8* result = new uint8_t[size];
 
-	for (int i = 0; i < size; i++)
+	for (u32 i = 0; i < size; i++)
 	{
-		const int pos = 2 * i;
+		const u32 pos = 2 * i;
 		const string sub = data.substr(pos, 2);
 		result[i] = hex_to_int(sub);
 	}

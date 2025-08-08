@@ -13,8 +13,6 @@ using std::endl;
 
 #include "Macs.h"
 
-#define STC8_ID_SIZE (sizeof(u32))
-
 //split string
 vector<string> split(const string s, const char delim = ' ') {
 	stringstream ss(s);
@@ -33,7 +31,7 @@ vector<string> split(const string s, const char delim = ' ') {
 int main(const int argc, const char* argv[])
 {
 	vector<string> result = split(argv[0], '\\');
-	bool dcd = false;
+	b8 dcd = false;
 	const string projectname = result[result.size() - 2];
 	const string wayToMapHex("./dist/stc/");
 	const string mapName("firmware.map");
@@ -85,10 +83,6 @@ int main(const int argc, const char* argv[])
 	//vector for store all rows of hex file
 	vector<HexRow> lines;
 
-	//index of config_in_flash HexRow
-	int indexneedHexRow = 0;
-	int mac_offset = 0;
-
 	//open hex file
 	ifstream hexFile = ifstream(wayToMapHex + hexName);
 
@@ -96,25 +90,37 @@ int main(const int argc, const char* argv[])
 		cout << "hexfile not found";
 		return -__LINE__;
 	}
-	int now_high = 0;
+	u32 now_high = 0;
+	//index of config_in_flash HexRow
+	u32 indexneedHexRow = 0xffffffff;
+	u32 mac_offset = 0;
 
 	while (getline(hexFile, s)) {
 		HexRow h(s);
 
-		const int now_address = (now_high << 16) | h.addres;
 		if (HEXRT_LINE_ADDR == h.type) {
 			now_high = h.addres;
-		} else if (HEXRT_DATA == h.type && h.size == STC8_ID_SIZE && hex_addr == now_address){
-			indexneedHexRow = lines.size();
-			cout << h << endl;
+		} else if (HEXRT_DATA == h.type){
+			const u32 now_address = (now_high << 16) | h.addres;
+			const b8 is_inside = ((now_address + 0) <= hex_addr) && (hex_addr < (now_address + h.size));
+			if(is_inside){
+				mac_offset = hex_addr - now_address;
+				indexneedHexRow = lines.size();
+				cout << "index: " << indexneedHexRow << " offset: " << mac_offset << endl;
+				cout << h << endl;
+			}
 		}
 		lines.push_back(h);
 	}
 	hexFile.close();
+	if(0xffffffff == indexneedHexRow){
+		cout << "id line not found";
+		return -__LINE__;
+	}
 
 	HexRow* needHexRow = (HexRow*) &(lines[indexneedHexRow]);
 
-	for (int i = 0; i < MACS_COUNT; i++) {
+	for (u8 i = 0; i < MACS_COUNT; i++) {
 		const string mac_name(names_macs[i]);
 		const string finalName(mac_name + "_" + endname + "_" + date + ".hex");
 		cout << finalName << std::endl;
