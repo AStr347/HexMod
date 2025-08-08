@@ -31,11 +31,11 @@ public:
 	string to_string();
 
 	//return and set CheckSumm
-	int GenerateCheckSumm();
+	u8 GenerateCheckSumm();
 
 	//for some reason it was not needed
-	bool EditDataString(const u32 _address, const u8* _data, const u32 _size);
-	bool EditDataString(const u32 address, const u32 data, const u32 size);
+	b8 EditDataString(const u32 _address, const u8* _data, const u32 _size);
+	b8 EditDataString(const u32 address, const u32 data, const u32 size);
 
 	//set values from data into content (hex string)
 	void DataToContent();

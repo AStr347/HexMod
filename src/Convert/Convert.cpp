@@ -18,7 +18,7 @@ string int_to_hex(const u64 dec) {
 }
 
 u8 char_to_int(const char c) {
-	int result;
+	u8 result;
 	if (c < 0x41)
 		result =  c - 0x30;
 	else if (c < 70)
